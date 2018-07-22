@@ -1,3 +1,12 @@
+---
+title: this
+comments: true
+date: 2018-07-14 14:40:40
+categories: 博客列表
+tags: JavaScript
+
+---
+
 > JavaScript的this总是指向一个对象，而具体指向哪个对象是在运行时基于函数的执行环境动态绑定的，而非函数被声明时的环境。
 
 ## 1.this的指向

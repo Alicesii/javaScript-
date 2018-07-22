@@ -1,9 +1,19 @@
+---
+title: call和apply的用途
+comments: true
+date: 2018-07-16 19:00:20
+categories: 博客列表
+tags: JavaScript
+
+---
+
 ## call和apply的用途
 
 ### 1.改变this指向
 
 call和apply最常见的用途是改变函数内部的this指向
 
+```
 var obj1={
 	name: "张三"
 }
@@ -19,6 +29,7 @@ function showname(){
 showname()  //window(this指向window)
 showname.call(obj1); //张三(this指向obj1)
 showname.apply(obj2); //李四(this指向obj2)
+```
 
 当执行showname.call(obj1);时，showname函数体内的this就指向obj1对象，
 
@@ -35,9 +46,12 @@ function showname(){
 
 比如有一个div节点，div节点的onclick事件中的this本来是指向这个div的
 
+```
 document.getElementById("div").onclick=function(){
 		console.log(this.id); //div
 }
+```
+
 假如该事件函数中有一个内部函数func，在事件内部调用func函数时，func函数内部的this这时指向了window，而不是我们期望的div.
 
 ```
@@ -51,7 +65,9 @@ document.getElementById("div").onclick=function(){
   func();
 }
 ```
+
 我们可以用call来修正func函数内的this，使其指向this。
+
 ```
 document.getElementById("div").onclick=function(){
 		console.log(this.id); //div
@@ -62,6 +78,7 @@ document.getElementById("div").onclick=function(){
   func.call(this);
 }
 ```
+
 ### 2.Function.prototype.bind()
 
 bind()方法的主要作用就是将函数绑定至某个对象，bind方法()会创建一个函数，函数体内this对象的值会被绑定到传入bind()函数的值。
@@ -113,6 +130,7 @@ var func=function(a,b,c,d){
 }.bind(obj,1,2);
 func(3,4);
 ```
+
 ### 3.借用其他对象的方法
 
 ##### 3.1.借用构造函数
@@ -182,29 +200,35 @@ function ArrayPush() {
 
 所以我们可以把"任意"对象传入Array.prototype.push;
 
+```
 var a={};
 Array.prototype.push.call(a,"first","second");
 console.log(a.length); //2
 console.log(a[0]); //first
+```
 
-其实这里的"任意"对象是有条件限制的：
+其实这里的`"任意"`对象是有条件限制的：
 
 * 对象本身要可以存取属性
 
 * 对象的length属性可读写
 
-
 如果借用Array.prototype.push方法的不是一个object类型的数据，而是一个number类型的数据，会有什么效果？
 
+```
 var a=0;
 Array.prototype.push.call(a,"first","second");
 console.log(a.length); //undefined
 console.log(a[0]); //firsundefined
+```
 
 我们无法在number类型上存取其他数据，所以一个number类型的数据不可能借用到Array.prototype.push方法
 
 函数的length属性只是一个只读的属性，表示形参的个数，如果把一个函数传入Array.prototype.push会发生什么呢？
 
+```
 function func(){}
 Array.prototype.push.call(func,"first","second");
 console.log(func.length); //Cannot assign to read only property 'length' of function 'function func(){}'
+```
+

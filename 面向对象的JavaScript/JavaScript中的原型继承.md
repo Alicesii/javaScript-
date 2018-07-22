@@ -1,3 +1,12 @@
+---
+title: JavaScript中的原型继承
+comments: true
+date: 2018-07-12 11:20:50
+categories: 博客列表
+tags: JavaScript
+
+---
+
 ## 原型继承
 
 在JavaScript中有几条原型继承的原则：
@@ -20,6 +29,7 @@ JavaScript的数据类型分为原始数据类型和引用数据类型，
 
 引用数据类型中所有的其他类都是由Object类继承而来，所以所有的引用数据类型都是对象。
 
+```
 Array.prototype.__proto__==Object.prototype  //true
 
 Date.prototype.__proto__==Object.prototype  //true
@@ -31,6 +41,7 @@ String.prototype.__proto__==Object.prototype //true
 RegExp.prototype.__proto__==Object.prototype  //true
 
 Number.prototype.__proto__==Object.prototype  //true
+```
 
 所以说所有的数据都是对象，一点也不为过吧。
 
@@ -71,6 +82,7 @@ console.log(a instanceof Person);  //true
 a.__proto__==Person.prototype;
 Person.prototype.__proto__==Object.prototype;
 ```
+
 注意：Person表示的不是类，而是函数构造器，JavaScript的函数既可以作为普通函数被调用，也可以作为构造器被调用。当使用new运算符来调用函数时，此时的函数就是一个构造器。
 
 用new运算符创建对象的过程，实际上也是先克隆`Object.prototype`对象，再进行一些其他额外操作的过程。
@@ -118,6 +130,7 @@ console.log(obj.__proto__==Object.prototype)  //true
 
 虽然JavaScript的每个对象都是由Object.prototype对象克隆而来的，但对象构造器的原型并不仅限于Object.prototype,而是可以动态指向其他对象。也就是说，当对象a需要借用对象b的能力时，可以有选择性地把对象a的构造器的原型指向b，从而达到继承的效果。
 
+```
 function A(name){
 this.name=name;
 }
@@ -131,6 +144,7 @@ var a=new A("张三");
 console.log(a.name); //张三
 
 console.log(a.__proto__==A.prototype)  //true
+```
 
 在执行上述代码时，搜索引擎做了哪些事？
 
@@ -143,6 +157,7 @@ console.log(a.__proto__==A.prototype)  //true
 
 通过原型的方式实现继承。
 
+```
 function A(){
 }
 A.prototype.name="张三";
@@ -160,6 +175,7 @@ console.log(B.prototype.__proto__==A.prototype)//true
 console.log(B.__proto__==A.__proto__)//true;
 console.log(A.__proto__==Object.__proto__); //true
 console.log(A.prototype.__proto__==Object.prototype)//true
+```
 
 在执行上述代码时，搜索引擎又做了哪些事？
 
